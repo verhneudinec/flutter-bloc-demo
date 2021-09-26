@@ -1,39 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_demo/color_bloc.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(BlocProvider(
+      create: (context) => ColorBloc(Colors.red), // TODO ??
+      child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  ColorBloc _bloc = ColorBloc();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _bloc.dispose();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ColorBloc _bloc = BlocProvider.of<ColorBloc>(context);
+
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
         body: Center(
-          child: StreamBuilder(
-            stream: _bloc.outputStateStream,
-            initialData: Colors.red,
-            builder: (context, snapshot) {
+          child: BlocBuilder<ColorBloc, Color>(
+            builder: (context, currentColor) {
               return AnimatedContainer(
                 height: 100,
                 width: 100,
-                color: snapshot.data,
+                color: currentColor,
                 duration: Duration(milliseconds: 500),
               );
             },
@@ -45,7 +34,7 @@ class _MyAppState extends State<MyApp> {
             FloatingActionButton(
               backgroundColor: Colors.red,
               onPressed: () {
-                _bloc.inputEventSink.add(ColorEvent.event_red);
+                _bloc.add(ColorEvent.event_red);
               },
             ),
             SizedBox(
@@ -54,7 +43,7 @@ class _MyAppState extends State<MyApp> {
             FloatingActionButton(
               backgroundColor: Colors.green,
               onPressed: () {
-                _bloc.inputEventSink.add(ColorEvent.event_green);
+                _bloc.add(ColorEvent.event_green);
               },
             ),
           ],
