@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_demo/bloc/user_bloc.dart';
-import 'package:flutter_bloc_demo/bloc/user_event.dart';
+import 'package:flutter_bloc_demo/cubit/user_cubit.dart';
 
 class ActionButtons extends StatelessWidget {
   const ActionButtons({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+    //final UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+
+    final UserCubit userCubit =
+        BlocProvider.of<UserCubit>(context); // TODO context.bloc
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         TextButton(
           onPressed: () {
-            userBloc.add(UserLoadEvent());
+            userCubit.fetchUsers();
           },
           child: Text("Load"),
           style: ButtonStyle(
@@ -27,7 +29,7 @@ class ActionButtons extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            userBloc.add(UserClearEvent());
+            userCubit.clearUsers();
           },
           child: Text("Clear"),
           style: ButtonStyle(

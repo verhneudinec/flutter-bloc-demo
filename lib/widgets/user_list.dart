@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_demo/bloc/user_bloc.dart';
-import 'package:flutter_bloc_demo/bloc/user_state.dart';
+import 'package:flutter_bloc_demo/cubit/user_state.dart';
+import 'package:flutter_bloc_demo/cubit/user_cubit.dart';
 
 class UserList extends StatelessWidget {
   const UserList({Key key}) : super(key: key);
@@ -9,7 +9,7 @@ class UserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: BlocBuilder<UserBloc, UserState>(
+      child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           if (state is UserEmptyState) {
             return Text("empty");
